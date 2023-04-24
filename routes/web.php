@@ -14,6 +14,6 @@ use App\Http\Controllers\ClienteController;
 |
 */
 
-Route::post('/crearcliente', [ClienteController::class, 'crearCliente']);
+Route::post('/creacliente', [ClienteController::class, 'creaCliente']);
 Route::get('/kpideclientes', [ClienteController::class, 'kpiClientes']);
 Route::get('/listclientes', [ClienteController::class, 'listClientes']);

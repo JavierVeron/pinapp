@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('cliente', function (Blueprint $table) {
             $table->id();
-            $table->string("nombre");
-            $table->string("apellido");
+            $table->string("nombre", 50);
+            $table->string("apellido", 50);
             $table->date("fecha_nacimiento");
+            $table->date("fecha_muerte");
             $table->timestamps();
         });
     }
