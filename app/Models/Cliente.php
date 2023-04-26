@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Ramsey\Uuid\Type\Integer;
 
 class Cliente extends Model
 {
@@ -32,10 +34,27 @@ class Cliente extends Model
         return $fecha_muerte;
     }
 
+    static function calcularEdadPromedio() {
+        $edadPromedio = DB::table('cliente')
+            ->select(DB::raw('AVG(YEAR(now()) - YEAR(fecha_nacimiento)) as edad'))
+            ->first();
+
+        return number_format($edadPromedio->edad, 2);
+    }
+
+    static function calcularDesviacionEstandar() {
+        $desviacionEstandar = DB::table('cliente')
+            ->select(DB::raw('STD(YEAR(now()) - YEAR(fecha_nacimiento)) as edad'))
+            ->first();
+
+        return number_format($desviacionEstandar->edad, 2);
+    }
+
     static function kpiClientes() {
-        $clientes = self::all();
-
-
+        return [
+            'edadPromedio' => self::calcularEdadPromedio(),
+            'desviacionEstandar' => self::calcularDesviacionEstandar(),
+        ];
     }
 
     public function creaCliente(Request $request) {
