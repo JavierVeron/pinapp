@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-use Ramsey\Uuid\Type\Integer;
 
 class Cliente extends Model
 {
@@ -61,7 +60,7 @@ class Cliente extends Model
         $cliente = self::create([
             'nombre' => $request->nombre,
             'apellido' => $request->apellido,
-            'fecha_nacimiento' => date('Y-m-d', strtotime($request->fecha_nacimiento)),
+            'fecha_nacimiento' => Carbon::createFromFormat('d-m-Y', $request->fecha_nacimiento),
             'fecha_muerte' => $this->fechaProbableMuerte($request->fecha_nacimiento)
         ]);
         
@@ -73,9 +72,9 @@ class Cliente extends Model
             'id' => $this->id,
             'nombre' => $this->nombre,
             'apellido' => $this->apellido,
-            'fechaNacimiento' => date("d-m-Y", strtotime($this->fecha_nacimiento)),
+            'fechaNacimiento' => Carbon::parse($this->fecha_nacimiento)->format('d-m-Y'),
             'edad' => $this->calcularEdad(),
-            'fechaProbableMuerte' => $this->fecha_muerte
+            'fechaProbableMuerte' => Carbon::parse($this->fecha_muerte)->format('d-m-Y')
         ];
 
         return $clientes;
